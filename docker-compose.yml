@@ -1,0 +1,19 @@
+version: '3'
+
+
+volumes:
+  greyfish:
+
+
+services:
+  greyfish:
+    build: .
+    image: "greyfish/standalone"
+    ports:
+     - "2000-2005:2000-2005"
+    volumes:
+     - "greyfish:/greyfish"
+    environment:
+     - greyfish_key=greyfish
+     - greyfish_path=/greyfish
+    command: "tail -F anything"
