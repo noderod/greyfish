@@ -6,7 +6,7 @@ BASICS
 Returns user files or information about them
 """
 
-import os, sys
+import os, sys, shutil
 from flask import Flask, request, jsonify, send_file
 import base_functions as bf
 from werkzeug.utils import secure_filename
@@ -15,6 +15,7 @@ import tarfile
 
 app = Flask(__name__)
 GREYFISH_FOLDER = os.environ['greyfish_path']+"/sandbox/"
+CURDIR = dir_path = os.path.dirname(os.path.realpath(__file__)) # Current directory
 
 
 # Checks if reef cloud storage is available
@@ -32,17 +33,12 @@ def all_user_files(toktok, gkey):
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
 
-    # Accounts for users without a sandbox yet
-    try:
-       return jsonify(bf.structure_in_json(GREYFISH_FOLDER+'/DIR_'+toktok))
-
-    except:
-       return 'Sandbox not set-up, create a sandbox first'
+    return jsonify(bf.structure_in_json(GREYFISH_FOLDER+'DIR_'+toktok))
 
 
 # Returns the contents of an entire directory
 @app.route('/grey/user_files/<gkey>/<toktok>/<DIR>')
-def all_user_files(toktok, gkey, DIR=''):
+def user_files(toktok, gkey, DIR=''):
 
     if not bf.valid_key(gkey):
         return "INVALID key"
@@ -51,14 +47,14 @@ def all_user_files(toktok, gkey, DIR=''):
 
     # Accounts for users without a sandbox yet
     try:
-       return jsonify(bf.structure_in_json(GREYFISH_FOLDER+'/DIR_'+toktok+'/'+'/'.join(DIR.split(';'))))
+       return jsonify(bf.structure_in_json(GREYFISH_FOLDER+'DIR_'+toktok+'/'+'/'.join(DIR.split('++'))))
 
     except:
        return 'Sandbox not set-up, create a sandbox first'
 
 
 # Uploads one file
-# Directories must be separated by ;
+# Directories must be separated by ++
 
 @app.route("/grey/upload/<gkey>/<toktok>/<DIR>", methods=['POST'])
 def result_upload(toktok, gkey, DIR=''):
@@ -72,17 +68,20 @@ def result_upload(toktok, gkey, DIR=''):
        return 'INVALID, no file submitted'
 
     file = request.files['file']
-    fnam = request.form['filename']
+    fnam = file.filename
 
     # Avoids empty filenames and those with commas
-    if file.filename == '':
+    if fnam == '':
        return 'INVALID, no file uploaded'
-    if ',' in file.filename:
+    if ',' in fnam:
        return "INVALID, no ',' allowed in filenames"
 
     # Ensures no commands within the filename
     new_name = secure_filename(fnam)
-    file.save(os.path.join(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split(';')), new_name))
+    if not os.path.exists(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))):
+        os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')))
+
+    file.save(os.path.join(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')), new_name))
     return 'File succesfully uploaded to Greyfish'
 
 
@@ -96,8 +95,8 @@ def delete_user_file(toktok, gkey, FILE, DIR=''):
        return 'INVALID, User directory does not exist'
 
     try:       
-       os.remove(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split(';'))+str(FILE))
-       return 'File succesfully deleted from reef storage'
+       os.remove(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))+'/'+str(FILE))
+       return 'File succesfully deleted from Greyfish storage'
 
     except:
        return 'File is not present in Greyfish'
@@ -105,24 +104,24 @@ def delete_user_file(toktok, gkey, FILE, DIR=''):
 
 # Returns a file
 @app.route('/grey/grey/<gkey>/<toktok>/<FIL>/<DIR>')
-def results_file(gkey, toktok, FIL, DIR=''):
+def grey_file(gkey, toktok, FIL, DIR=''):
 
     if not bf.valid_key(gkey):
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
 
-    USER_DIR = GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split(';'))
+    USER_DIR = GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))+'/'
     if str(FIL) not in os.listdir(USER_DIR):
        return 'INVALID, File not available'
 
     return send_file(USER_DIR+str(FIL))
 
 
-# Uploads one ddirectory, it the directory already exists, then it deletes it and uploads the new contents
+# Uploads one directory, it the directory already exists, then it deletes it and uploads the new contents
 # Must be a tar file
-@app.route("/grey/upload_dir/<gkey>/<toktok>/<DIR>")
-def upload_dir(gkey, toktok, FIL, DIR):
+@app.route("/grey/upload_dir/<gkey>/<toktok>/<DIR>", methods=['POST'])
+def upload_dir(gkey, toktok, DIR):
 
     if not bf.valid_key(gkey):
         return "INVALID key"
@@ -130,29 +129,63 @@ def upload_dir(gkey, toktok, FIL, DIR):
        return 'INVALID, User directory does not exist'
 
     file = request.files['file']
+    fnam = file.filename
 
     # Avoids empty filenames and those with commas
-    if file.filename == '':
+    if fnam == '':
        return 'INVALID, no file uploaded'
-    if ',' in file.filename:
+    if ',' in fnam:
        return "INVALID, no ',' allowed in filenames"
 
     # Untars the file, makes a directory if it does not exist
-    if ('.tar.gz' not in file.filename) and ('.tgz' not in file.filename):
+    if ('.tar.gz' not in fnam) and ('.tgz' not in fnam):
         return 'ERROR: Compression file not accepted, file must be .tgz or .tar.gz'
 
-    try:
-       tar = tarfile.open(file)
-       tar.getmembers()
-     except:
-        tar.close()
-        return "Tar cannot be opened"
+    new_name = secure_filename(fnam)
 
-    # Saves the file and deletes the rest
-    tar.extractall(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split(';')[:-1]))
-    tar.close()
+    try:
+
+        if os.path.exists(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))):
+            shutil.rmtree(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')))
+
+        os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')))
+        file.save(os.path.join(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')), new_name))
+        tar = tarfile.open(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))+'/'+new_name)
+        tar.extractall(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')))
+        tar.close()
+
+
+    except:
+        return "Could not open tar file" 
 
     return 'File succesfully uploaded to Greyfish'
+
+
+# Downloads a directory
+# Equivalent to downloading the tar file, since they are both equivalent
+@app.route('/grey/grey_dir/<gkey>/<toktok>/<DIR>')
+def grey_dir(gkey, toktok, DIR=''):
+
+    if not bf.valid_key(gkey):
+        return "INVALID key"
+    if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
+       return 'INVALID, User directory does not exist'
+
+    USER_DIR = GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))+'/'
+
+    if not os.path.exists(USER_DIR):
+       return 'INVALID, Directory not available'
+
+    os.chdir(USER_DIR)
+
+    tar = tarfile.open("summary.tar.gz", "w:gz")
+    for ff in os.listdir('.'):
+      tar.add(ff)
+    tar.close()
+
+    os.chdir(CURDIR)
+
+    return send_file(USER_DIR+"summary.tar.gz")
 
 
 

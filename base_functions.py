@@ -37,12 +37,15 @@ def create_new_dirtag(fpl, exdic):
 # Returns a dictionary showing all the files in a directory (defaults to working directory)
 def structure_in_json(PATH = '.'):
 
-    FSJ = {}
+    FSJ = {PATH.split('/')[-1]:{"files":[]}}
 
     # Includes the current directory
-    for ff in (['.']+[("./"+str(x)).split('/') for x in Path(PATH).glob('**/*')]):
+    # Replaces everything before the user
+    unpart = '/'.join(PATH.split('/')[:-1])+'/'
 
-        if os.path.isdir('/'.join(ff)):
+    for ff in [str(x).replace(unpart, '').split('/') for x in Path(PATH).glob('**/*')]:
+
+        if os.path.isdir(unpart+'/'.join(ff)):
             create_new_dirtag(ff, FSJ)
             continue
 

@@ -26,7 +26,7 @@ def create_user(toktok, gkey):
     try:
         os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok))
         os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/___RESULTS')
-        return "Reef cloud storage now available"
+        return "Greyfish cloud storage now available"
     except:
         return "User already has an account"
 
