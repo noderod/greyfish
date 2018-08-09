@@ -37,7 +37,7 @@ def get_all(toktok, gkey):
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
 
-    USER_DIR = GREYFISH_FOLDER+'DIR_'+str(toktok)
+    USER_DIR = GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'
     os.chdir(USER_DIR)
 
     user_data = [x for x in os.listdir('.') if x != 'alldata.tar.gz']

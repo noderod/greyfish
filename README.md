@@ -48,7 +48,7 @@ Note: deactivating the APIs will not change or delete any data, it will simply n
 	gk=$Greyfish_Key # Set up in the docker-compose.yml
 
 	# Create a new user
-	curl http://$SERVER_IP:2003/grey/create_user/$USER_ID/$gk
+	curl http://$SERVER_IP:2003/grey/create_user/$gk/$USER_ID
 	# Get a JSON object of all user files
 	curl http://$SERVER_IP:2000/grey/all_user_files/$gk/$USER_ID
 	curl http://$SERVER_IP:2001/grey/all_user_files/$gk/$USER_ID
@@ -69,7 +69,7 @@ Note: deactivating the APIs will not change or delete any data, it will simply n
 	# Gets all the data currently in the user directory
 	curl http://$SERVER_IP:2001/grey/get_all/$gk/$USER_ID
 	# Replaces all current data
-	curl http://$SERVER_IP:2002/grey/push_all/$gk/$USER_ID
+	curl -F file=@$TARRED_CONTENT  http://$SERVER_IP:2002/grey/push_all/$gk/$USER_ID
 
 
 ``` 
