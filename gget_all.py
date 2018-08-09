@@ -7,7 +7,7 @@ Returns all the files the user has in the form of a tar file
 """
 
 import os
-from flask import Flask, send_file, request, jsonify
+from flask import Flask, send_file, jsonify
 import base_functions as bf
 import tarfile
 
@@ -48,12 +48,9 @@ def get_all(toktok, gkey):
     	tar.add(content)
     tar.close()
 
-
     os.chdir(CURDIR)
 
     return send_file(USER_DIR+"alldata.tar.gz")
-
-
 
 
 

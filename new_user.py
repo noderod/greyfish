@@ -16,7 +16,7 @@ GREYFISH_FOLDER = os.environ['greyfish_path']+"/sandbox/"
 
 
 # toktok (str): User token
-@app.route("/grey/create_user/<toktok>/<gkey>")
+@app.route("/grey/create_user/<gkey>/<toktok>")
 def create_user(toktok, gkey):
 
 
@@ -31,4 +31,4 @@ def create_user(toktok, gkey):
 
 
 if __name__ == '__main__':
-   app.run(host = '0.0.0.0', port = 2002)
+   app.run(host = '0.0.0.0', port = 2003)

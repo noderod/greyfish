@@ -10,7 +10,7 @@ services:
     build: .
     image: "greyfish/standalone"
     ports:
-     - "2000-2005:2000-2005"
+     - "2000-2003:2000-2003"
     volumes:
      - "greyfish:/greyfish"
     environment:

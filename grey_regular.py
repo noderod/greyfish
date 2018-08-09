@@ -64,9 +64,6 @@ def result_upload(toktok, gkey, DIR=''):
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
 
-    if request.method != 'POST':
-       return 'INVALID, no file submitted'
-
     file = request.files['file']
     fnam = file.filename
 
@@ -87,7 +84,7 @@ def result_upload(toktok, gkey, DIR=''):
 
 # Deletes a file already present in the user
 @app.route('/grey/delete_file/<gkey>/<toktok>/<FILE>/<DIR>')
-def delete_user_file(toktok, gkey, FILE, DIR=''):
+def delete_file(toktok, gkey, FILE, DIR=''):
 
     if not bf.valid_key(gkey):
         return "INVALID key"

@@ -26,8 +26,10 @@ if [ $1 == "-up" ]; then
         > /dev/null 2>&1 & echo $!  > /grey/greg_api.txt
    nohup /grey/gget_all.py & \
         > /dev/null 2>&1 & echo $!  > /grey/gget_api.txt
+   nohup /grey/push_all.py & \
+        > /dev/null 2>&1 & echo $!  > /grey/push_api.txt
 
-   printf "Reef APIs are now active\n"
+   printf "Greyfish APIs are now active\n"
 fi
 
 
@@ -36,7 +38,8 @@ if [ $1 == "-down" ]; then
    # Must compensate for the fork
    kill -9 $(($(cat /grey/nnuu_api.txt) - 1))
    kill -9 $(($(cat /grey/greg_api.txt) - 1))
-   kill -9 $(($(cat /grey/ggets_api.txt) - 1))
+   kill -9 $(($(cat /grey/gget_api.txt) - 1))
+   kill -9 $(($(cat /grey/push_api.txt) - 1))
 
-   printf "Reef APIs have been disconnected\n"
+   printf "Greyfish APIs have been disconnected\n"
 fi
