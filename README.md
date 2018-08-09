@@ -40,7 +40,9 @@ To activate or switch off the APIs, enter the docker container and do:
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.
 
 
-####Usage 
+#### Usage 
+
+The Greyfish APIs can be called from any system as long as the greyfish key is known.  
 
 
 ```bash
