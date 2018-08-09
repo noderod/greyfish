@@ -51,6 +51,10 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 
 	# Create a new user
 	curl http://$SERVER_IP:2003/grey/create_user/$gk/$USER_ID
+	# Deelte a user
+	curl http://$SERVER_IP:2003/grey/delete_user/$gk/$USER_ID
+
+
 	# Get a JSON object of all user files
 	curl http://$SERVER_IP:2000/grey/all_user_files/$gk/$USER_ID
 	curl http://$SERVER_IP:2001/grey/all_user_files/$gk/$USER_ID
