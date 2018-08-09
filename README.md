@@ -15,6 +15,7 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 * Clone this current directory
 * Change directory
 * Change the greyfish key (recommended) and influxdb password setup
+* Enter the URL or IP of the machine without http:// (i.e. google.com instead of http://google.com/)
 * Set up the docker compose
 
 ```bash
@@ -22,9 +23,12 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 	cd greyfish
 	# Change the Greyfish key (recommended)
 	vi docker-compose.yml
-	# Change the influxdb log credentials
+	# Change the influxdb log credentials and the URL/IP
 	vi credentials.yml
 	docker-compose up -d
+
+	docker exec -it $influxdb_container bash
+	influxdb /init-influxdb.sh
 ```
 
 To activate or switch off the APIs, enter the docker container and do:  

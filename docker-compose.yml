@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 
 volumes:
@@ -9,8 +9,7 @@ volumes:
 services:
 
   greyfish:
-    build:
-     .
+    build: .
     image: "greyfish/standalone"
 
     ports:
@@ -18,9 +17,9 @@ services:
     volumes:
      - "greyfish:/greyfish"
 
-     extends:
-       file: credentials.yml
-       service: db_creds
+    extends:
+      file: credentials.yml
+      service: db_creds
 
     environment:
      - greyfish_key=greyfish
@@ -43,4 +42,4 @@ services:
     volumes:
       - "$PWD:/var/lib/influxdb"
 
-    command: "influxdb /init-influxdb.sh && tail -F anything"
+    command: "influxd"
