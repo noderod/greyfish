@@ -22,10 +22,10 @@ if [ $1 == "-up" ]; then
 
    nohup /grey/new_user.py & \
          > /dev/null 2>&1 & echo $! > /grey/nnuu_api.txt
-   nohup /grey/reef_regular.py & \
-        > /dev/null 2>&1 & echo $!  > /grey/rerg_api.txt
-   nohup /grey/reef_results.py & \
-        > /dev/null 2>&1 & echo $!  > /grey/rers_api.txt
+   nohup /grey/grey_regular.py & \
+        > /dev/null 2>&1 & echo $!  > /grey/greg_api.txt
+   nohup /grey/gget_all.py & \
+        > /dev/null 2>&1 & echo $!  > /grey/gget_api.txt
 
    printf "Reef APIs are now active\n"
 fi
@@ -35,8 +35,8 @@ if [ $1 == "-down" ]; then
    
    # Must compensate for the fork
    kill -9 $(($(cat /grey/nnuu_api.txt) - 1))
-   kill -9 $(($(cat /grey/gfrg_api.txt) - 1))
-   kill -9 $(($(cat /grey/gfrs_api.txt) - 1))
+   kill -9 $(($(cat /grey/greg_api.txt) - 1))
+   kill -9 $(($(cat /grey/ggets_api.txt) - 1))
 
    printf "Reef APIs have been disconnected\n"
 fi
