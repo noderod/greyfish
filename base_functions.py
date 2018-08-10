@@ -6,6 +6,7 @@ Contains a set of functions that are called accross the other APIs
 
 import os
 from pathlib import Path
+from influxdb import InfluxDBClient
 
 
 
@@ -58,3 +59,17 @@ def structure_in_json(PATH = '.'):
         nwd["files"].append(ff[-1])
 
     return FSJ
+
+
+# Returns a administrative client 
+def idb_admin():
+
+    return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_ADMIN_USER'], 
+        password = os.environ['INFLUXDB_ADMIN_PASSWORD'], database = 'db0')
+
+
+# Retruns an incfluxdb client with read-only access
+def idb_reader():
+
+    return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_USER'], 
+        password = os.environ['INFLUXDB_USER_PASSWORD'], database = 'db0')

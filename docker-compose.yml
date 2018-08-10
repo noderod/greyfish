@@ -41,5 +41,6 @@ services:
 
     volumes:
       - "$PWD:/var/lib/influxdb"
+      - "/srv/docker/influxdb/data:/var/lib/influxdb"
 
     command: "influxd"
