@@ -2,8 +2,9 @@
 
 Greyfish is an out of the box, simple cloud storage framework.  
 It will store files and directories without changes on the go.  
-All your files will remain protected and visible only to you. 
+All your files will remain protected and visible only to you.  
 
+Powered with a wsgi server, access your files through multiple threads. 
 
 
 #### Installation  
@@ -29,11 +30,11 @@ To activate or switch off the APIs, enter the docker container and do:
 ```bash
 	# Enter container
 	docker exec -it $CONTAINER bash
-	cd /reef
-	# Activate
-	./API_Daemon.sh -up
+	cd /grey
+	# Activate (change the number of threads if needed, standard is 4)
+	apicomm -up
 	# Deactivate
-	./API_Daemon.sh -down
+	apicomm -down
 ```
 
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.

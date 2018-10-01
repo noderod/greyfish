@@ -20,10 +20,10 @@ fi
 
 
 if [ $1 == "-up" ]; then 
-  nohup gunicorn -w 4 -b 0.0.0.1:2000 grey_regular:app &
-  nohup gunicorn -w 4 -b 0.0.0.1:2001 gget_all:app &
-  nohup gunicorn -w 4 -b 0.0.0.1:2002 push_all:app &
-  nohup gunicorn -w 4 -b 0.0.0.1:2003 new_user:app &
+  gunicorn -w 4 -b 0.0.0.0:2000 grey_regular:app &
+  gunicorn -w 4 -b 0.0.0.0:2001 gget_all:app &
+  gunicorn -w 4 -b 0.0.0.0:2002 push_all:app &
+  gunicorn -w 4 -b 0.0.0.0:2003 new_user:app &
   printf "Greyfish APIs are now active\n"
 fi
 
