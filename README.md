@@ -8,11 +8,6 @@ Powered with a wsgi server, access your files through multiple threads.
 
 
 #### Installation  
- 
-* Clone this current directory
-* Change directory
-* Change the greyfish key (recommended)
-* Set up the docker compose
 
 ```bash
 	git clone https://github.com/noderod/greyfish
@@ -32,9 +27,9 @@ To activate or switch off the APIs, enter the docker container and do:
 	docker exec -it $CONTAINER bash
 	cd /grey
 	# Activate (change the number of threads if needed, standard is 4)
-	apicomm -up
+	./API_Daemon.sh -up
 	# Deactivate
-	apicomm -down
+	./API_Daemon.sh -down
 ```
 
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.
