@@ -6,12 +6,8 @@ All your files will remain protected and visible only to you.
 
 
 
-#### Installation
-
-Pocket Reef is designed as a complement to a BOINC server, although it can also be used to store personal data.  
-
-
-**Instructions**  
+#### Installation  
+ 
 * Clone this current directory
 * Change directory
 * Change the greyfish key (recommended)
@@ -24,6 +20,9 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 	vi docker-compose.yml
 	docker-compose up -d
 ```
+
+
+#### Instructions  
 
 To activate or switch off the APIs, enter the docker container and do:  
 
