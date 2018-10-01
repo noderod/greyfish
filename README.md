@@ -75,7 +75,8 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 	curl http://$SERVER_IP:2000/grey/delete_dir/$gk/$USER_ID/PATH++TO++DIR
 	# Returns a file
 	curl http://$SERVER_IP:2000/grey/grey/$gk/$USER_ID/$FILENAME/PATH++TO++DIR
-	# Uploads a directory (must be compressed into .tgz or .tar.gz), if it already exists, it substitutes all files inside
+	# Uploads a directory (must be compressed into .tgz or .tar.gz),
+	# if it already exists, it substitutes all files inside
 	curl -F file=@$LOCAL_PATH_TO_TAR http://$SERVER_IP:2000/grey/upload_dir/$gk/$USER_ID/PATH++TO++DIR
 	# Dowloads a directory as a .tar.gz file
 	curl http://$SERVER_IP:2000/grey/grey_dir/$gk/$USER_ID/PATH++TO++DIR
