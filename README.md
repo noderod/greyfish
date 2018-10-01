@@ -51,7 +51,7 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 
 	# Create a new user
 	curl http://$SERVER_IP:2003/grey/create_user/$gk/$USER_ID
-	# Deelte a user
+	# Delete a user
 	curl http://$SERVER_IP:2003/grey/delete_user/$gk/$USER_ID
 
 
@@ -72,7 +72,7 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 	# Uploads a directory (must be compressed into .tgz or .tar.gz), if it already exists, it substitutes all files inside
 	curl -F file=@$LOCAL_PATH_TO_TAR http://$SERVER_IP:2000/grey/upload_dir/$gk/$USER_ID/PATH++TO++DIR
 	# Dowloads a directory as a .tar.gz file
-	curl http://$SERVER_IP:2000/grey/grey_dir/$gk/$USER_ID/$FILENAME/PATH++TO++DIR
+	curl http://$SERVER_IP:2000/grey/grey_dir/$gk/$USER_ID/PATH++TO++DIR
 
 	# Gets all the data currently in the user directory
 	curl http://$SERVER_IP:2001/grey/get_all/$gk/$USER_ID

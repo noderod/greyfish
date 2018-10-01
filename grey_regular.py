@@ -170,7 +170,7 @@ def upload_dir(gkey, toktok, DIR):
     except:
         return "Could not open tar file" 
 
-    return 'File succesfully uploaded to Greyfish'
+    return 'Directory succesfully uploaded to Greyfish'
 
 
 # Downloads a directory
