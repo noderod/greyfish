@@ -16,4 +16,4 @@ services:
     environment:
      - greyfish_key=greyfish
      - greyfish_path=/greyfish
-    command: "tail -F anything"
+    command: "/grey/API_Daemon -up"

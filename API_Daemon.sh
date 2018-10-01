@@ -14,20 +14,17 @@ if [ $1 == "-h" ]; then
    printf "Automatic API daemon set-up\n"
    printf "Use flag -up to set-up the APIs\n"
    printf "Use flag -down to cancel the APIs\n"
+   print "\n All APIs will be started with 4 workers, modify this file if more workers are required\n"
    exit 1
 fi
 
 
 if [ $1 == "-up" ]; then 
+  gunicorn -w 4 -b 127.0.0.1:2000 grey_regular:grey_regular &
+  gunicorn -w 4 -b 127.0.0.1:2001 gget_all:grey_getall &
+  gunicorn -w 4 -b 127.0.0.1:2002 push_all:grey_pushall &
+  gunicorn -w 4 -b 127.0.0.1:2003 new_user:grey_nu &
 
-   nohup /grey/new_user.py & \
-         > /dev/null 2>&1 & echo $! > /grey/nnuu_api.txt
-   nohup /grey/grey_regular.py & \
-        > /dev/null 2>&1 & echo $!  > /grey/greg_api.txt
-   nohup /grey/gget_all.py & \
-        > /dev/null 2>&1 & echo $!  > /grey/gget_api.txt
-   nohup /grey/push_all.py & \
-        > /dev/null 2>&1 & echo $!  > /grey/push_api.txt
 
    printf "Greyfish APIs are now active\n"
 fi
@@ -35,11 +32,7 @@ fi
 
 if [ $1 == "-down" ]; then 
    
-   # Must compensate for the fork
-   kill -9 $(($(cat /grey/nnuu_api.txt) - 1))
-   kill -9 $(($(cat /grey/greg_api.txt) - 1))
-   kill -9 $(($(cat /grey/gget_api.txt) - 1))
-   kill -9 $(($(cat /grey/push_api.txt) - 1))
+   pkill gunicorn
 
    printf "Greyfish APIs have been disconnected\n"
 fi
