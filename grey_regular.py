@@ -99,6 +99,20 @@ def delete_file(toktok, gkey, FILE, DIR=''):
        return 'File is not present in Greyfish'
 
 
+# Deletes a directory
+@app.route("/grey/delete_dir/<gkey>/<toktok>/<DIR>")
+def delete_dir(toktok, gkey, DIR):
+
+    if not bf.valid_key(gkey):
+        return "INVALID key, cannot create a new user"
+
+    try:
+        shutil.rmtree(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))+'/')
+        return "Directory deleted"
+    except:
+        return "User directory does not exist"
+
+
 # Returns a file
 @app.route('/grey/grey/<gkey>/<toktok>/<FIL>/<DIR>')
 def grey_file(gkey, toktok, FIL, DIR=''):
@@ -156,7 +170,7 @@ def upload_dir(gkey, toktok, DIR):
     except:
         return "Could not open tar file" 
 
-    return 'File succesfully uploaded to Greyfish'
+    return 'Directory succesfully uploaded to Greyfish'
 
 
 # Downloads a directory
