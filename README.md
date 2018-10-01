@@ -2,10 +2,12 @@
 
 Greyfish is an out of the box, simple cloud storage framework.  
 It will store files and directories without changes on the go.  
-All your files will remain protected and visible only to you. 
+All your files will remain protected and visible only to you.  
+
+Powered with a wsgi server, access your files through multiple threads. 
 
 
-
+<<<<<<< HEAD
 #### Installation
 
 Pocket Reef is designed as a complement to a BOINC server, although it can also be used to store personal data.  
@@ -17,6 +19,9 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 * Change the greyfish key (recommended) and influxdb password setup
 * Enter the URL or IP of the machine without http:// (i.e. google.com instead of http://google.com/)
 * Set up the docker compose
+=======
+#### Installation  
+>>>>>>> master
 
 ```bash
 	git clone https://github.com/noderod/greyfish
@@ -31,13 +36,16 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 	influxdb /init-influxdb.sh
 ```
 
+
+#### Instructions  
+
 To activate or switch off the APIs, enter the docker container and do:  
 
 ```bash
 	# Enter container
 	docker exec -it $CONTAINER bash
-	cd /reef
-	# Activate
+	cd /grey
+	# Activate (change the number of threads if needed, standard is 4)
 	./API_Daemon.sh -up
 	# Deactivate
 	./API_Daemon.sh -down

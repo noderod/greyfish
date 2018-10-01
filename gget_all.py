@@ -55,4 +55,4 @@ def get_all(toktok, gkey):
 
 
 if __name__ == '__main__':
-   app.run(host ='0.0.0.0', port = 2001)
+   app.run()
