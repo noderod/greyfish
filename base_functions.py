@@ -89,13 +89,14 @@ def timformat():
     return datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f")
 
 
-# Logs a failed login due to an incorrect key
+# Logs a failed login
 # logkey (str): Key used
 # IP (str): IP used
 # unam (str): username used
 # action (str)
+# due_to (str): Reason for failed login, most likely due to incorrect key
 
-def failed_login(logkey, IP, unam, action):
+def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
     FC = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
         password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'failed_login')
 
@@ -108,7 +109,7 @@ def failed_login(logkey, IP, unam, action):
         valid_user=False
 
     FC.write_points([{
-                            "measurement":"incorrect_key",
+                            "measurement":due_to,
                             "tags":{
                                     "id":unam,
                                     "valid_account":valid_user,
