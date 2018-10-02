@@ -102,11 +102,11 @@ def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
 
     # Finds if the user is valid or not
     # Searches the list of directories
-    allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]))
+    allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]+"/sandbox"))
     if unam in allowed_users:
-        valid_user=True
+        valid_user="1"
     else:
-        valid_user=False
+        valid_user="0"
 
     FC.write_points([{
                             "measurement":due_to,
@@ -115,9 +115,9 @@ def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
                                     "valid_account":valid_user,
                                     "action":action
                                     },
-                            "time":bf.timformat(),
+                            "time":timformat(),
                             "fields":{
-                                    "client-IP":request.environ['REMOTE_ADDR'],
+                                    "client-IP":IP,
                                     "logkey":logkey
                                     }
                     }])
