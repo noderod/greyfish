@@ -12,7 +12,6 @@ curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8
 curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "failed_login"'
 printf "Created InfluxDB databases\n"
 
-<<<<<<< HEAD
 # Assigns write privileges
 curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
     --data-urlencode "q=GRANT WRITE ON \"greyfish\" TO \"$INFLUXDB_WRITE_USER\""
@@ -27,7 +26,4 @@ curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8
 
 printf "Database privileges have been added\n"
 
-
-=======
->>>>>>> parent of d1cbca8... Added write, read users to influxdb
 rm -- "$0"

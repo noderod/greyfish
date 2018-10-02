@@ -8,15 +8,6 @@ Keep your use data available in InfluxDB.
 Powered with a wsgi server, access your files through multiple threads. 
 
 
-#### Installation 
-
-
-**Instructions**  
-* Clone this current directory
-* Change directory
-* Change the greyfish key (recommended) and influxdb password setup
-* Enter the URL or IP of the machine without http:// (i.e. google.com instead of http://google.com/)
-* Set up the docker compose
 
 
 #### Installation  
