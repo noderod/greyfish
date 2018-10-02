@@ -51,16 +51,17 @@ def delete_user(toktok, gkey):
 
     try:
         shutil.rmtree(GREYFISH_FOLDER+'DIR_'+str(toktok))
-                hugo.write_points([{
-                            "measurement":"delete_account",
-                            "tags":{
-                                    "id":toktok,
-                                    },
-                            "time":bf.timformat(),
-                            "fields":{
-                                    "client-IP":request.environ['REMOTE_ADDR']
-                                    }
-                            }])
+        hugo.write_points([{
+                    "measurement":"delete_account",
+                    "tags":{
+                            "id":toktok,
+                            },
+                    "time":bf.timformat(),
+                    "fields":{
+                            "client-IP":request.environ['REMOTE_ADDR']
+                            }
+                    }])
+        
         return "User files and data have been completely deleted"
     except:
         return "User does not exist"

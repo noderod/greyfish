@@ -12,4 +12,24 @@ curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8
 curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "failed_login"'
 printf "Created InfluxDB databases\n"
 
+# Creates write and read users
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=CREATE USER \"$INFLUXDB_WRITE_USER\" WITH PASSWORD  \'$INFLUXDB_WRITE_USER_PASSWORD\'"
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=CREATE USER \"$INFLUXDB_READ_USER\" WITH PASSWORD  \'$INFLUXDB_READ_USER_PASSWORD\'"
+
+
+# Assigns write privileges
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=GRANT WRITE ON \"greyfish\" TO \"$INFLUXDB_WRITE_USER\""
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=GRANT WRITE ON \"failed_login\" TO \"$INFLUXDB_WRITE_USER\""
+
+# Assigns read privileges
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=GRANT READ ON \"greyfish\" TO \"$INFLUXDB_READ_USER\""
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query \
+    --data-urlencode "q=GRANT READ ON \"failed_login\" TO \"$INFLUXDB_READ_USER\""
+
+
 rm -- "$0"
