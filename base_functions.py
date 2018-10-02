@@ -87,3 +87,36 @@ def idb_writer(db='greyfish'):
 # Returns a string in UTC time in the format YYYY-MM-DD HH:MM:SS.XXXXXX (where XXXXXX are microseconds)
 def timformat():
     return datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f")
+
+
+# Logs a failed login due to an incorrect key
+# logkey (str): Key used
+# IP (str): IP used
+# unam (str): username used
+# action (str)
+
+def failed_login(logkey, IP, unam, action):
+    FC = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'failed_login')
+
+    # Finds if the user is valid or not
+    # Searches the list of directories
+    allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]))
+    if unam in allowed_users:
+        valid_user=True
+    else:
+        valid_user=False
+
+    FC.write_points([{
+                            "measurement":"incorrect_key",
+                            "tags":{
+                                    "id":unam,
+                                    "valid_account":valid_user,
+                                    "action":action
+                                    },
+                            "time":bf.timformat(),
+                            "fields":{
+                                    "client-IP":request.environ['REMOTE_ADDR'],
+                                    "logkey":logkey
+                                    }
+                    }])

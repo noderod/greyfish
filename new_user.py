@@ -20,8 +20,11 @@ hugo = bf.idb_writer('greyfish')
 @app.route("/grey/create_user/<gkey>/<toktok>")
 def create_user(toktok, gkey):
 
-
+    # Gets the IP address
+    IP_addr = request.environ['REMOTE_ADDR']
     if not bf.valid_key(gkey):
+        # Records all failed logins
+        bf.failed_login(gkey, IP_addr, toktok, "create-new-user")
         return "INVALID key, cannot create a new user"
 
     try:
@@ -33,7 +36,7 @@ def create_user(toktok, gkey):
                                     },
                             "time":bf.timformat(),
                             "fields":{
-                                    "client-IP":request.environ['REMOTE_ADDR']
+                                    "client-IP":IP_addr
                                     }
                             }])
 
@@ -46,7 +49,10 @@ def create_user(toktok, gkey):
 @app.route("/grey/delete_user/<gkey>/<toktok>")
 def delete_user(toktok, gkey):
 
+    IP_addr = request.environ['REMOTE_ADDR']
+
     if not bf.valid_key(gkey):
+        bf.failed_login(gkey, IP_addr, toktok, "delete-user")
         return "INVALID key, cannot create a new user"
 
     try:
@@ -58,7 +64,7 @@ def delete_user(toktok, gkey):
                             },
                     "time":bf.timformat(),
                     "fields":{
-                            "client-IP":request.environ['REMOTE_ADDR']
+                            "client-IP":IP_addr
                             }
                     }])
         
