@@ -28,7 +28,7 @@ services:
       service:
         db_creds
 
-    command: "/grey/setup.sh && tail -F anything"
+    command: "tail -F anything"
 
 
   # Define an InfluxDB service

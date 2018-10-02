@@ -7,7 +7,6 @@ All your files will remain protected and visible only to you.
 Powered with a wsgi server, access your files through multiple threads. 
 
 
-<<<<<<< HEAD
 #### Installation
 
 Pocket Reef is designed as a complement to a BOINC server, although it can also be used to store personal data.  
@@ -45,6 +44,8 @@ To activate or switch off the APIs, enter the docker container and do:
 	# Enter container
 	docker exec -it $CONTAINER bash
 	cd /grey
+	# Start the needed databases
+	/grey/setup.sh
 	# Activate (change the number of threads if needed, standard is 4)
 	./API_Daemon.sh -up
 	# Deactivate

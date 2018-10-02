@@ -14,7 +14,7 @@ if [ $1 == "-h" ]; then
    printf "Automatic API daemon set-up\n"
    printf "Use flag -up to set-up the APIs\n"
    printf "Use flag -down to cancel the APIs\n"
-   print "\n All APIs will be started with 4 workers, modify this file if more workers are required\n"
+   printf "\n All APIs will be started with 4 workers, modify this file if more workers are required\n"
    exit 1
 fi
 

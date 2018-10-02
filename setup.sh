@@ -8,13 +8,11 @@
 #  | -deletes:   Deleted file/dir
 #  | -overhaul:  Only covers users who have completely updated their repo using the appropriate command
 
-curl -G http://localhost:8086/query -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_USER_PASSWORD --data-urlencode "q=CREATE DATABASE greyfish"
-curl -G http://localhost:8086/query -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_USER_PASSWORD --data-urlencode "q=CREATE DATABASE user_data"
-curl -G http://localhost:8086/query -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_USER_PASSWORD --data-urlencode "q=CREATE DATABASE common"
-curl -G http://localhost:8086/query -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_USER_PASSWORD --data-urlencode "q=CREATE DATABASE deletes"
-curl -G http://localhost:8086/query -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_USER_PASSWORD --data-urlencode "q=CREATE DATABASE overhaul"
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "greyfish"'
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "user_data"'
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "common"'
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "deletes"'
+curl -XPOST -u $INFLUXDB_ADMIN_USER:$INFLUXDB_ADMIN_PASSWORD  http://$URL_BASE:8086/query --data-urlencode 'q=CREATE DATABASE "overhaul"'
+printf "Created InfluxDB databases\n"
 
-/grey/API_Daemon.sh -up
-
-# Deletes itself
 rm -- "$0"
