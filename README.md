@@ -19,16 +19,16 @@ Pocket Reef is designed as a complement to a BOINC server, although it can also 
 * Change the greyfish key (recommended) and influxdb password setup
 * Enter the URL or IP of the machine without http:// (i.e. google.com instead of http://google.com/)
 * Set up the docker compose
-=======
+
+
 #### Installation  
->>>>>>> master
 
 ```bash
 	git clone https://github.com/noderod/greyfish
 	cd greyfish
-	# Change the Greyfish key (recommended)
+	# Change the Greyfish key (recommended) and the base URL for the project
 	vi docker-compose.yml
-	# Change the influxdb log credentials and the URL/IP
+	# Change the influxdb log credentials
 	vi credentials.yml
 	docker-compose up -d
 

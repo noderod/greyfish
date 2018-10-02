@@ -62,14 +62,15 @@ def structure_in_json(PATH = '.'):
 
 
 # Returns a administrative client 
-def idb_admin():
+# Default refers to the basic grey server
+def idb_admin(db='greyfish'):
 
     return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_ADMIN_USER'], 
-        password = os.environ['INFLUXDB_ADMIN_PASSWORD'], database = 'db0')
+        password = os.environ['INFLUXDB_ADMIN_PASSWORD'], database = db)
 
 
-# Retruns an incfluxdb client with read-only access
-def idb_reader():
+# Returns an incfluxdb client with read-only access
+def idb_reader(db='greyfish'):
 
     return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_USER'], 
-        password = os.environ['INFLUXDB_USER_PASSWORD'], database = 'db0')
+        password = os.environ['INFLUXDB_USER_PASSWORD'], database = db)
