@@ -72,5 +72,13 @@ def idb_admin(db='greyfish'):
 # Returns an incfluxdb client with read-only access
 def idb_reader(db='greyfish'):
 
-    return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_USER'], 
-        password = os.environ['INFLUXDB_USER_PASSWORD'], database = db)
+    return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_READ_USER'], 
+        password = os.environ['INFLUXDB_READ_USER_PASSWORD'], database = db)
+
+
+# Returns an incfluxdb client with write privileges
+def idb_reader(db='greyfish'):
+
+    return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = db)
+
