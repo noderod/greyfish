@@ -5,6 +5,7 @@ Contains a set of functions that are called accross the other APIs
 """
 
 import os
+import datetime
 from pathlib import Path
 from influxdb import InfluxDBClient
 
@@ -77,8 +78,12 @@ def idb_reader(db='greyfish'):
 
 
 # Returns an incfluxdb client with write privileges
-def idb_reader(db='greyfish'):
+def idb_writer(db='greyfish'):
 
     return InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
         password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = db)
 
+
+# Returns a string in UTC time in the format YYYY-MM-DD HH:MM:SS.XXXXXX (where XXXXXX are microseconds)
+def timformat():
+    return datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f")
