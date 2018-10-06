@@ -5,7 +5,7 @@ Contains a set of functions that are called accross the other APIs
 """
 
 import os
-import datetime
+import datetime, time
 from pathlib import Path
 from influxdb import InfluxDBClient
 
@@ -109,19 +109,39 @@ def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
         valid_user="0"
 
     FC.write_points([{
-                            "measurement":due_to,
-                            "tags":{
-                                    "id":unam,
-                                    "valid_account":valid_user,
-                                    "action":action
-                                    },
-                            "time":timformat(),
-                            "fields":{
-                                    "client-IP":IP,
-                                    "logkey":logkey
-                                    }
+                    "measurement":"bad_credentials",
+                    "tags":{
+                            "id":unam,
+                            "valid_account":valid_user,
+                            "action":action,
+                            "reason":due_to
+                            },
+                    "time":timformat(),
+                    "fields":{
+                            "client-IP":IP,
+                            "logkey":logkey
+                            }
                     }])
 
 
 # Generic greyfish action
+# action_id (str): ID of the pertaining action
+# specs (str): Specific action detail
+def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
+    glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
 
+    glog.write_points([{
+                    "measurement":"action_logs",
+                    "tags":{
+                            "id":unam,
+                            "action":action,
+                            "S1":spec1
+                            },
+                    "time":timformat(),
+                    "fields":{
+                            "client-IP":IP,
+                            "S2":spec2,
+                            "S4":spec3
+                            }
+                    }])

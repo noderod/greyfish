@@ -20,19 +20,24 @@ CURDIR = dir_path = os.path.dirname(os.path.realpath(__file__)) # Current direct
 @app.route('/grey/all_user_files/<gkey>/<toktok>')
 def all_user_files(toktok, gkey):
 
+    IP_addr = request.environ['REMOTE_ADDR']
     if not bf.valid_key(gkey):
+        bf.failed_login(gkey, IP_addr, toktok, "json-all-user-files")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
 
+    bf.greyfish_log(IP_addr, toktok, "json summary", "all files")
     return jsonify(bf.structure_in_json(GREYFISH_FOLDER+'DIR_'+toktok))
 
 
-# Sends a tar file with all the contents
+# Downloads a tar file with all the contents
 @app.route('/grey/get_all/<gkey>/<toktok>')
 def get_all(toktok, gkey):
 
+    IP_addr = request.environ['REMOTE_ADDR']
     if not bf.valid_key(gkey):
+        bf.failed_login(gkey, IP_addr, toktok, "download-all-user-content")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
        return 'INVALID, User directory does not exist'
@@ -50,6 +55,7 @@ def get_all(toktok, gkey):
 
     os.chdir(CURDIR)
 
+    bf.greyfish_log(IP_addr, toktok, "download", "all")
     return send_file(USER_DIR+"alldata.tar.gz")
 
 
