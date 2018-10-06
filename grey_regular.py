@@ -86,7 +86,7 @@ def result_upload(toktok, gkey, DIR=''):
     if not os.path.exists(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++'))):
         os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')))
 
-    bf.greyfish_log(IP_addr, toktok, "upload", "single file", '/'.join(DIR.split('++')), new_nam)
+    bf.greyfish_log(IP_addr, toktok, "upload", "single file", '/'.join(DIR.split('++')), new_name)
     file.save(os.path.join(GREYFISH_FOLDER+'DIR_'+str(toktok)+'/'+'/'.join(DIR.split('++')), new_name))
     return 'File succesfully uploaded to Greyfish'
 

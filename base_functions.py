@@ -142,6 +142,6 @@ def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
                     "fields":{
                             "client-IP":IP,
                             "S2":spec2,
-                            "S4":spec3
+                            "S3":spec3
                             }
                     }])

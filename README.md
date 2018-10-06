@@ -6,6 +6,7 @@ All your files will remain protected and visible only to you.
 Keep your use data available in InfluxDB.
 
 Powered with a wsgi server, access your files through multiple threads. 
+Data can be easily monitored using grafana or any other app.
 
 
 
@@ -74,7 +75,7 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 	# Uploads a directory (must be compressed into .tgz or .tar.gz),
 	# if it already exists, it substitutes all files inside
 	curl -F file=@$LOCAL_PATH_TO_TAR http://$SERVER_IP:2000/grey/upload_dir/$gk/$USER_ID/PATH++TO++DIR
-	# Dowloads a directory as a .tar.gz file
+	# Downloads a directory as a .tar.gz file
 	curl http://$SERVER_IP:2000/grey/grey_dir/$gk/$USER_ID/PATH++TO++DIR
 
 	# Gets all the data currently in the user directory
