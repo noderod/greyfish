@@ -10,6 +10,8 @@ If the user already exists, an error result is returned
 import os, shutil
 from flask import Flask, request
 import base_functions as bf
+from urllib.parse import unquote
+
 
 app = Flask(__name__)
 GREYFISH_FOLDER = os.environ['greyfish_path']+"/sandbox/"
@@ -17,8 +19,15 @@ hugo = bf.idb_writer('greyfish')
 
 
 # toktok (str): User token
-@app.route("/grey/create_user/<gkey>/<toktok>")
-def create_user(toktok, gkey):
+@app.route("/greyfish/api/users/create_user/<toktok>")
+def create_user(toktok):
+
+    try:
+        gkey = request.form['gkey']
+    except:
+        return "INVALID input, greyfish key not provided"
+
+    tokotk = unquote(toktok)
 
     # Gets the IP address
     IP_addr = request.environ['REMOTE_ADDR']
@@ -46,8 +55,15 @@ def create_user(toktok, gkey):
 
 
 # Deletes an entire user directory
-@app.route("/grey/delete_user/<gkey>/<toktok>")
+@app.route("/greyfish/api/users/delete_user/<toktok>")
 def delete_user(toktok, gkey):
+
+    try:
+        gkey = request.form['gkey']
+    except:
+        return "INVALID input, greyfish key not provided"
+
+    tokotk = unquote(toktok)
 
     IP_addr = request.environ['REMOTE_ADDR']
 
