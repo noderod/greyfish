@@ -53,9 +53,9 @@ The Greyfish APIs can be called from any system as long as the greyfish key is k
 	gk=$Greyfish_Key # Set up in the docker-compose.yml
 
 	# Create a new user
-	curl http://$SERVER_IP:2003/grey/create_user/$gk/$USER_ID
+	curl -F gkey=$gk http://$SERVER_IP:2003/greyfish/api/users/create_user/$USER_ID
 	# Delete a user
-	curl http://$SERVER_IP:2003/grey/delete_user/$gk/$USER_ID
+	curl -F gkey=$gk http://$SERVER_IP:2003/greyfish/api/users/delete_user/$USER_ID
 
 
 	# Get a JSON object of all user files

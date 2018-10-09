@@ -19,7 +19,7 @@ hugo = bf.idb_writer('greyfish')
 
 
 # toktok (str): User token
-@app.route("/greyfish/api/users/create_user/<toktok>")
+@app.route("/greyfish/api/users/create_user/<path:toktok>", methods = ['POST'])
 def create_user(toktok):
 
     try:
@@ -27,7 +27,9 @@ def create_user(toktok):
     except:
         return "INVALID input, greyfish key not provided"
 
-    tokotk = unquote(toktok)
+    toktok = unquote(toktok)
+    if ('/' in toktok) or ('\\' in toktok):
+        return "INVALID character present"
 
     # Gets the IP address
     IP_addr = request.environ['REMOTE_ADDR']
@@ -55,15 +57,17 @@ def create_user(toktok):
 
 
 # Deletes an entire user directory
-@app.route("/greyfish/api/users/delete_user/<toktok>")
-def delete_user(toktok, gkey):
+@app.route("/greyfish/api/users/delete_user/<path:toktok>", methods = ['POST'])
+def delete_user(toktok):
 
     try:
         gkey = request.form['gkey']
     except:
         return "INVALID input, greyfish key not provided"
 
-    tokotk = unquote(toktok)
+    toktok = unquote(toktok)
+    if ('/' in toktok) or ('\\' in toktok):
+        return "INVALID character present"
 
     IP_addr = request.environ['REMOTE_ADDR']
 
