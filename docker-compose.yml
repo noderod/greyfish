@@ -1,4 +1,4 @@
-version: '2'
++version: '2'
 
 
 volumes:
@@ -14,7 +14,7 @@ services:
     image: "greyfish/standalone"
 
     ports:
-      - "2000-2003:2000-2003"
+      - "2000-2004:2000-2004"
     volumes:
       - "greyfish:/greyfish"
 
@@ -45,3 +45,15 @@ services:
       service:
         db_creds
     command: "influxd"
+
+
+  redis:
+    image: 'redis:4-alpine'
+    extends:
+      file:
+        credentials.yml
+      service:
+        db_creds
+    command: redis-server --requirepass $REDIS_AUTH
+    ports:
+      - '6379:6379'

@@ -8,6 +8,10 @@ import os
 import datetime, time
 from pathlib import Path
 from influxdb import InfluxDBClient
+import redis
+
+# Assigns each token to a valid ID
+r_tok = redis.Redis(host=os.environ['URL_BASE'], auth=os.environ['REDIS_AUTH'], db=3)
 
 
 
@@ -16,6 +20,11 @@ def valid_key(ukey):
 
     if ukey == os.environ['greyfish_key']:
         return True
+    if r_tok.get(ukey).decode('UTF-8') != None:
+        # Deletes the token since it is single use
+        r_tok.delete(ukey)
+        return True
+
     return False
 
 
