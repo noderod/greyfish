@@ -6,7 +6,10 @@ All your files will remain protected and visible only to you.
 Keep your use data available in InfluxDB.
 
 Powered with a wsgi server, access your files through multiple threads. 
-Data can be easily monitored using grafana or any other app.
+Data can be easily monitored using grafana or any other app.  
+
+Allows single use tokens for specifc actions. These tokens are stored within an attached redis server on port 6379, and can be accessed, created, or deleted
+from other another server or container within the same machine.
 
 
 
@@ -20,7 +23,8 @@ Data can be easily monitored using grafana or any other app.
 	vi docker-compose.yml
 	# Change the influxdb log credentials
 	vi credentials.yml
-	docker-compose up -d
+	# Select a redis password
+	REDIS_AUTH=$redis-password docker-compose up -d
 ```
 
 
