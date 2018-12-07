@@ -22,7 +22,7 @@ def create_user(toktok, gkey):
 
     # Gets the IP address
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         # Records all failed logins
         bf.failed_login(gkey, IP_addr, toktok, "create-new-user")
         return "INVALID key, cannot create a new user"
@@ -51,7 +51,7 @@ def delete_user(toktok, gkey):
 
     IP_addr = request.environ['REMOTE_ADDR']
 
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "delete-user")
         return "INVALID key, cannot create a new user"
 

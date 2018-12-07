@@ -29,7 +29,7 @@ def api_operational():
 def all_user_files(toktok, gkey):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "json-all-user-files")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -44,7 +44,7 @@ def all_user_files(toktok, gkey):
 def user_files(toktok, gkey, DIR=''):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "json-user-dir")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -66,7 +66,7 @@ def user_files(toktok, gkey, DIR=''):
 def result_upload(toktok, gkey, DIR=''):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "upload-file")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -96,7 +96,7 @@ def result_upload(toktok, gkey, DIR=''):
 def delete_file(toktok, gkey, FILE, DIR=''):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "delete-file")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -116,7 +116,7 @@ def delete_file(toktok, gkey, FILE, DIR=''):
 def delete_dir(toktok, gkey, DIR):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "delete-dir")
         return "INVALID key"
 
@@ -133,7 +133,7 @@ def delete_dir(toktok, gkey, DIR):
 def grey_file(gkey, toktok, FIL, DIR=''):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "download-file")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -153,7 +153,7 @@ def grey_file(gkey, toktok, FIL, DIR=''):
 def upload_dir(gkey, toktok, DIR):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "upload-dir")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -200,7 +200,7 @@ def upload_dir(gkey, toktok, DIR):
 def grey_dir(gkey, toktok, DIR=''):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "download-dir")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):

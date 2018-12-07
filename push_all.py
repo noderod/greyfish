@@ -24,7 +24,7 @@ GREYFISH_FOLDER = os.environ['greyfish_path']+"/sandbox/"
 def push_all(toktok, gkey):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "push-all-user-content")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):

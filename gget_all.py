@@ -21,7 +21,7 @@ CURDIR = dir_path = os.path.dirname(os.path.realpath(__file__)) # Current direct
 def all_user_files(toktok, gkey):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "json-all-user-files")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):
@@ -36,7 +36,7 @@ def all_user_files(toktok, gkey):
 def get_all(toktok, gkey):
 
     IP_addr = request.environ['REMOTE_ADDR']
-    if not bf.valid_key(gkey):
+    if not bf.valid_key(gkey, toktok):
         bf.failed_login(gkey, IP_addr, toktok, "download-all-user-content")
         return "INVALID key"
     if str('DIR_'+toktok) not in os.listdir(GREYFISH_FOLDER):

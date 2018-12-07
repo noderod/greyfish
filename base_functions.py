@@ -16,11 +16,11 @@ r_tok = redis.Redis(host=os.environ['URL_BASE'], password=os.environ['REDIS_AUTH
 
 
 # Checks if the provided user key is valid
-def valid_key(ukey):
+def valid_key(ukey, username):
 
     if ukey == os.environ['greyfish_key']:
         return True
-    if r_tok.get(ukey) != None:
+    if r_tok.get(ukey).decode("UTF-8") == username:
         # Deletes the token since it is single use
         r_tok.delete(ukey)
         return True
