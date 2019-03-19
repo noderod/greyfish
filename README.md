@@ -32,7 +32,7 @@ To activate or switch off the APIs, enter the docker container and do:
 
 ```bash
 # Enter container
-docker exec -it $CONTAINER bash
+docker exec -it greyfish_greyfish_1 bash
 cd /grey
 # Start the needed databases and assign permission (APIs will not be started)
 /grey/setup.sh
@@ -84,5 +84,13 @@ curl http://$SERVER_IP:2001/grey/get_all/$gk/$USER_ID
 # Replaces all current data
 curl -F file=@$TARRED_CONTENT  http://$SERVER_IP:2002/grey/push_all/$gk/$USER_ID
 
+
+# Admin actions
+
+# self_ID refers to how the admin wishes to refer to itself, useful in case of using temporary tokens
+# Check all available usernames
+curl -X POST -H "Content-Type: application/json" -d '{"key":"examplegrey", "self_ID":"admin1"}' http://$SERVER_IP:2004/grey/admin/users/usernames/all
+# Purges all files older than Xsec seconds
+curl -X POST -H "Content-Type: application/json" -d '{"key":"examplegrey", "self_ID":"admin1"}' http://$SERVER_IP:2004/grey/admin/purge/olderthan/$Xsec
 ``` 
 

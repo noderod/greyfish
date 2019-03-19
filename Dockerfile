@@ -10,6 +10,7 @@ FROM python:3.6-alpine
 
 # Copies the necessary files
 COPY base_functions.py  /grey/base_functions.py
+COPY remove_files       /grey/remove_files.py
 COPY new_user.py        /grey/new_user.py
 COPY gget_all.py        /grey/gget_all.py
 COPY push_all.py        /grey/push_all.py
