@@ -94,3 +94,10 @@ curl -X POST -H "Content-Type: application/json" -d '{"key":"examplegrey", "self
 curl -X POST -H "Content-Type: application/json" -d '{"key":"examplegrey", "self_ID":"admin1"}' http://$SERVER_IP:2004/grey/admin/purge/olderthan/$Xsec
 ``` 
 
+
+
+#### Testing
+
+The [speed-testing](./speed-testing) subdirectory contains a series of python scripts to test upload and download speeds for a Greyfish server.
+
+
