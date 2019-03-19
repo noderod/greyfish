@@ -14,14 +14,14 @@ services:
     image: "greyfish/standalone"
 
     ports:
-      - "2000-2003:2000-2003"
+      - "2000-2004:2000-2004"
     volumes:
       - "greyfish:/greyfish"
 
     environment:
-      - greyfish_key=greyfish
-      - greyfish_path=/greyfish
-      - URL_BASE=0.0.0.0
+      - greyfish_key
+      - greyfish_path
+      - URL_BASE
       - REDIS_AUTH
 
     extends:

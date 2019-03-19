@@ -24,6 +24,7 @@ if [ $1 == "-up" ]; then
   gunicorn -w 4 -b 0.0.0.0:2001 gget_all:app &
   gunicorn -w 4 -b 0.0.0.0:2002 push_all:app &
   gunicorn -w 4 -b 0.0.0.0:2003 new_user:app &
+  gunicorn -w 4 -b 0.0.0.0:2004 admin:app &
   printf "Greyfish APIs are now active\n"
 fi
 

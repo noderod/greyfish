@@ -75,6 +75,14 @@ def structure_in_json(PATH = '.'):
     return FSJ
 
 
+
+# Given two lists, returns those values that are lacking in the second
+# Empty if list 2 contains those elements
+def l2_contains_l1(l1, l2):
+    return[elem for elem in l1 if elem not in l2]
+
+
+
 # Returns a administrative client 
 # Default refers to the basic grey server
 def idb_admin(db='greyfish'):
@@ -148,6 +156,31 @@ def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
                     "measurement":"action_logs",
                     "tags":{
                             "id":unam,
+                            "action":action,
+                            "S1":spec1
+                            },
+                    "time":timformat(),
+                    "fields":{
+                            "client-IP":IP,
+                            "S2":spec2,
+                            "S3":spec3
+                            }
+                    }])
+
+
+
+# Admin greyfish action
+# self_identifier (str): Who the user identifies as while executing the action
+# action_id (str): ID of the pertaining action
+# specs (str): Specific action detail
+def greyfish_admin_log(IP, self_identifier, action, spec1=None, spec2=None, spec3=None):
+    glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
+
+    glog.write_points([{
+                    "measurement":"admin_logs",
+                    "tags":{
+                            "id":self_identifier,
                             "action":action,
                             "S1":spec1
                             },

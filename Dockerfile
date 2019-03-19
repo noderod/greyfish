@@ -14,6 +14,7 @@ COPY new_user.py        /grey/new_user.py
 COPY gget_all.py        /grey/gget_all.py
 COPY push_all.py        /grey/push_all.py
 COPY grey_regular.py    /grey/grey_regular.py
+COPY admin.py           /grey/admin.py
 COPY API_Daemon.sh      /grey/API_Daemon.sh
 COPY setup.sh           /grey/setup.sh
 
@@ -22,7 +23,7 @@ COPY setup.sh           /grey/setup.sh
 # Bash for convenience
 RUN apk update && apk add bash curl && mkdir -p /greyfish/sandbox &&\
     pip3 install gunicorn Flask influxdb redis requests &&\
-    chmod +x /grey/new_user.py /grey/grey_regular.py /grey/gget_all.py /grey/push_all.py /grey/API_Daemon.sh \
+    chmod +x /grey/new_user.py /grey/grey_regular.py /grey/gget_all.py /grey/push_all.py /grey/API_Daemon.sh /grey/admin.py \
     /grey/setup.sh
 
 

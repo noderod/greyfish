@@ -19,12 +19,10 @@ from other another server or container within the same machine.
 ```bash
 git clone https://github.com/noderod/greyfish
 cd greyfish
-# Change the Greyfish key (recommended) and the base URL for the project
-vi docker-compose.yml
 # Change the influxdb log credentials
 vi credentials.yml
-# Select a redis password
-REDIS_AUTH=$redis-password docker-compose up -d
+# Set the appropriate passwords and base URL (without / and http(s)://
+REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-compose up -d
 ```
 
 
