@@ -22,6 +22,7 @@ cd greyfish
 # Change the influxdb log credentials
 vi credentials.yml
 # Set the appropriate passwords and base URL (without / and http(s)://
+# Define the number of threads using "greyfish_threads", default is set to 4
 REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-compose up -d
 ```
 

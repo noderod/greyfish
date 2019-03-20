@@ -21,6 +21,7 @@ services:
     environment:
       - greyfish_key
       - greyfish_path
+      - greyfish_threads
       - URL_BASE
       - REDIS_AUTH
 
