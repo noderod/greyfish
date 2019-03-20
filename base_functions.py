@@ -8,10 +8,18 @@ import os
 import datetime, time
 from pathlib import Path
 from influxdb import InfluxDBClient
-import redis
 
-# Assigns each token to a valid ID
-r_tok = redis.Redis(host=os.environ['URL_BASE'], password=os.environ['REDIS_AUTH'], db=3)
+
+# Checks for correct codes
+influx_logs = os.environ["influx_command"] == "influxd"
+redis_active = os.environ["redis_command"] == "redis-server --requirepass $REDIS_AUTH"
+
+if redis_active:
+
+    import redis
+
+    # Assigns each token to a valid ID
+    r_tok = redis.Redis(host=os.environ['URL_BASE'], password=os.environ['REDIS_AUTH'], db=3)
 
 
 
@@ -21,13 +29,14 @@ def valid_key(ukey, username):
     if ukey == os.environ['greyfish_key']:
         return True
 
-    if r_tok.get(ukey) == None:
-        return False
+    if redis_active:
+        if r_tok.get(ukey) == None:
+            return False
 
-    if r_tok.get(ukey).decode("UTF-8") == username:
-        # Deletes the token since it is single use
-        r_tok.delete(ukey)
-        return True
+        if r_tok.get(ukey).decode("UTF-8") == username:
+            # Deletes the token since it is single use
+            r_tok.delete(ukey)
+            return True
 
     return False
 
@@ -118,54 +127,62 @@ def timformat():
 # due_to (str): Reason for failed login, most likely due to incorrect key
 
 def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
-    FC = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
-        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'failed_login')
 
-    # Finds if the user is valid or not
-    # Searches the list of directories
-    allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]+"/sandbox"))
-    if unam in allowed_users:
-        valid_user="1"
+    if influx_logs:
+        FC = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+            password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'failed_login')
+
+        # Finds if the user is valid or not
+        # Searches the list of directories
+        allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]+"/sandbox"))
+        if unam in allowed_users:
+            valid_user="1"
+        else:
+            valid_user="0"
+
+        FC.write_points([{
+                        "measurement":"bad_credentials",
+                        "tags":{
+                                "id":unam,
+                                "valid_account":valid_user,
+                                "action":action,
+                                "reason":due_to
+                                },
+                        "time":timformat(),
+                        "fields":{
+                                "client-IP":IP,
+                                "logkey":logkey
+                                }
+                        }])
     else:
-        valid_user="0"
-
-    FC.write_points([{
-                    "measurement":"bad_credentials",
-                    "tags":{
-                            "id":unam,
-                            "valid_account":valid_user,
-                            "action":action,
-                            "reason":due_to
-                            },
-                    "time":timformat(),
-                    "fields":{
-                            "client-IP":IP,
-                            "logkey":logkey
-                            }
-                    }])
+        pass
 
 
 # Generic greyfish action
 # action_id (str): ID of the pertaining action
 # specs (str): Specific action detail
 def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
-    glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
-        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
 
-    glog.write_points([{
-                    "measurement":"action_logs",
-                    "tags":{
-                            "id":unam,
-                            "action":action,
-                            "S1":spec1
-                            },
-                    "time":timformat(),
-                    "fields":{
-                            "client-IP":IP,
-                            "S2":spec2,
-                            "S3":spec3
-                            }
-                    }])
+    if influx_logs:
+        glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+            password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
+
+        glog.write_points([{
+                        "measurement":"action_logs",
+                        "tags":{
+                                "id":unam,
+                                "action":action,
+                                "S1":spec1
+                                },
+                        "time":timformat(),
+                        "fields":{
+                                "client-IP":IP,
+                                "S2":spec2,
+                                "S3":spec3
+                                }
+                        }])
+    else:
+        pass
 
 
 
@@ -174,20 +191,24 @@ def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
 # action_id (str): ID of the pertaining action
 # specs (str): Specific action detail
 def greyfish_admin_log(IP, self_identifier, action, spec1=None, spec2=None, spec3=None):
-    glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
-        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
 
-    glog.write_points([{
-                    "measurement":"admin_logs",
-                    "tags":{
-                            "id":self_identifier,
-                            "action":action,
-                            "S1":spec1
-                            },
-                    "time":timformat(),
-                    "fields":{
-                            "client-IP":IP,
-                            "S2":spec2,
-                            "S3":spec3
-                            }
-                    }])
+    if influx_logs:
+        glog = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
+            password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'greyfish')
+
+        glog.write_points([{
+                        "measurement":"admin_logs",
+                        "tags":{
+                                "id":self_identifier,
+                                "action":action,
+                                "S1":spec1
+                                },
+                        "time":timformat(),
+                        "fields":{
+                                "client-IP":IP,
+                                "S2":spec2,
+                                "S3":spec3
+                                }
+                        }])
+    else:
+        pass

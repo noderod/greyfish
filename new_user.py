@@ -29,16 +29,18 @@ def create_user(toktok, gkey):
 
     try:
         os.makedirs(GREYFISH_FOLDER+'DIR_'+str(toktok))
-        hugo.write_points([{
-                            "measurement":"signup",
-                            "tags":{
-                                    "id":toktok,
-                                    },
-                            "time":bf.timformat(),
-                            "fields":{
-                                    "client-IP":IP_addr
-                                    }
-                            }])
+
+        if bf.influx_logs:
+            hugo.write_points([{
+                                "measurement":"signup",
+                                "tags":{
+                                        "id":toktok,
+                                        },
+                                "time":bf.timformat(),
+                                "fields":{
+                                        "client-IP":IP_addr
+                                        }
+                                }])
 
         return "Greyfish cloud storage now available"
     except:
@@ -57,16 +59,17 @@ def delete_user(toktok, gkey):
 
     try:
         shutil.rmtree(GREYFISH_FOLDER+'DIR_'+str(toktok))
-        hugo.write_points([{
-                    "measurement":"delete_account",
-                    "tags":{
-                            "id":toktok,
-                            },
-                    "time":bf.timformat(),
-                    "fields":{
-                            "client-IP":IP_addr
-                            }
-                    }])
+        if bf.influx_logs:
+            hugo.write_points([{
+                        "measurement":"delete_account",
+                        "tags":{
+                                "id":toktok,
+                                },
+                        "time":bf.timformat(),
+                        "fields":{
+                                "client-IP":IP_addr
+                                }
+                        }])
 
         return "User files and data have been completely deleted"
     except:

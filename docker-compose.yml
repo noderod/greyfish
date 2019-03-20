@@ -24,6 +24,8 @@ services:
       - greyfish_threads
       - URL_BASE
       - REDIS_AUTH
+      - influx_command
+      - redis_command
 
     extends:
       file:
@@ -47,13 +49,13 @@ services:
         credentials.yml
       service:
         db_creds
-    command: "influxd"
+    command: "$influx_command"
 
 
   redis:
     image: 'redis:4-alpine'
     environment:
       - REDIS_AUTH
-    command: redis-server --requirepass $REDIS_AUTH
+    command: "$redis_command"
     ports:
       - '6379:6379'
