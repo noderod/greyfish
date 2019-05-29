@@ -95,6 +95,15 @@ curl http://$SERVER_IP:2001/grey/get_all/$gk/$USER_ID
 # Replaces all current data
 curl -F file=@$TARRED_CONTENT  http://$SERVER_IP:2002/grey/push_all/$gk/$USER_ID
 
+# Checksum actions
+# Download a directory as a checksum file (first 8 characters of SHA256 checksum + tar.gz)
+# This will move the tar file to a temporary checksum directory in case it needs to be checked later
+# and delete the constituent directory files
+# Both the -O and -J flags are required
+curl -O -J http://$SERVER_IP:2000/grey/download_checksum_dir/$gk/$USER_ID/PATH++TO++DIR
+# Delete a checksum file given its full name (i.e. FILENAME=y78t4jha.tar.gz) 
+curl http://$SERVER_IP:2000/grey/delete_checksum_file/$gk/$USER_ID/$FILENAME
+
 
 # Admin actions
 
