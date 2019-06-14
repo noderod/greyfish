@@ -151,7 +151,7 @@ def grey_file(gkey, toktok, FIL, DIR=''):
        return 'INVALID, File not available'
 
     bf.greyfish_log(IP_addr, toktok, "download", "single file", '/'.join(DIR.split('++')), FIL)
-    return send_file(USER_DIR+str(FIL))
+    return send_file(USER_DIR+str(FIL), as_attachment=True)
 
 
 # Uploads one directory, it the directory already exists, then it deletes it and uploads the new contents
