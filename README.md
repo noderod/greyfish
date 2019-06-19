@@ -1,9 +1,9 @@
 ### Portable, transferrable cloud storage
 
-Greyfish is an out of the box, simple cloud storage framework.  
-It will store files and directories without changes on the go.  
-All your files will remain protected and visible only to you.  
-Keep your use data available in InfluxDB.
+Greyfish is an out-of-the-box, simple cloud storage framework.
+It will store files and directories without changes on the go.
+All your files will remain protected and visible only to you.
+Keep your user data safe and portable in a docker container.
 
 Powered with a wsgi server, access your files through multiple threads. 
 Data can be easily monitored using grafana or any other app.  
@@ -101,6 +101,8 @@ curl -F file=@$TARRED_CONTENT  http://$SERVER_IP:2002/grey/push_all/$gk/$USER_ID
 # and delete the constituent directory files
 # Both the -O and -J flags are required
 curl -O -J http://$SERVER_IP:2000/grey/download_checksum_dir/$gk/$USER_ID/PATH++TO++DIR
+# Or using wget:
+wget --content-disposition http://$SERVER_IP:2000/grey/download_checksum_dir/$gk/$USER_ID/PATH++TO++DIR
 # Delete a checksum file given its full name (i.e. FILENAME=y78t4jha.tar.gz) 
 curl http://$SERVER_IP:2000/grey/delete_checksum_file/$gk/$USER_ID/$FILENAME
 
