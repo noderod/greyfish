@@ -22,6 +22,16 @@ mkdir greyfish
 REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-compose up -d
 ```
 
+To rebuild greyfish after changes in the code:
+```bash
+# Bring down the containers
+docker-compose down
+# Set the appropriate passwords and base URL (without / and http(s)://
+# Define the number of threads using "greyfish_threads", default is set to 4
+REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-compose up -d --build
+```
+
+
 
 #### Instructions  
 
