@@ -60,6 +60,14 @@ Note: deactivating the APIs will not change or delete any data, it will simply n
 Note: Greyfish can be setup without Redis and InfluxDB.
 
 
+#### Data Persistance
+
+Greyfish is setup using two Docker volumes by default, one storing the InfluxDB database with the log information, the other
+containing the users' data (files and directories). These volumes ensure that, should the containers be brought the down,
+the data will persist.
+Furthermore, these volumes are shared with the host, so that other programs may use the data.  
+If a user wishes to remove this functionality, simply remove the volume information from the *docker-compose.yml* file by
+deleting lines 5, 6, 18, 19, 42, 43.
 
 
 #### Usage 
