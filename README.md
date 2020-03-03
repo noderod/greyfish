@@ -7,9 +7,9 @@ Powered with a WSGI server, Greyfish is multi-threaded. Data stored in Greyfish 
 Greyfish allows single use tokens for specifc actions. These tokens are stored within an attached redis server on port 6379, and can be accessed, created, or deleted from  another server or container within the same machine.
 
 
+--------------
 
-
-#### Installation  
+#### Installation (single node)
 
 ```bash
 git clone https://github.com/noderod/greyfish
@@ -33,7 +33,7 @@ REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-
 
 
 
-#### Instructions  
+#### Instructions (single node)
 
 To activate or switch off the APIs, enter the docker container and do:  
 
@@ -52,7 +52,7 @@ cd /grey
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.
 
 
-**Partial installations**  
+**Partial installations** (single node
 
 * Installation without Redis temporary tokens: Set *redis_command* to a different Linux command.
 * Installation without InfluxDB logs: Set *influx_command* to a a different Linux command.
@@ -60,7 +60,7 @@ Note: deactivating the APIs will not change or delete any data, it will simply n
 Note: Greyfish can be setup without Redis and InfluxDB.
 
 
-#### Data Persistance
+#### Data Persistance (single node)
 
 Greyfish is setup using two Docker volumes by default, one storing the InfluxDB database with the log information, the other
 containing the users' data (files and directories). These volumes ensure that, should the containers be brought the down,
@@ -70,13 +70,19 @@ If a user wishes to remove this functionality, simply remove the volume informat
 deleting lines 5, 6, 18, 19, 42, 43.
 
 
-#### Usage 
+
+### Distributed setup
+
+Installation, instructions, and usage available on [speed-testing](./cloud-distributed).
+
+
+
+#### Usage (single node)
 
 The Greyfish APIs can be called from any system as long as the greyfish key is known.  
 
 
 ```bash
-	
 gk=$Greyfish_Key # Set up in the docker-compose.yml
 
 # Create a new user
