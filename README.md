@@ -32,6 +32,8 @@ REDIS_AUTH="examplepass" URL_BASE=example.com greyfish_key="examplegrey" docker-
 ```
 
 
+Note: If using Docker for Mac, and want to run Greyfish on your localhost, set URL_BASE=docker.for.mac.localhost. When calling the Greyfish API, set SERVER_IP=localhost.
+
 
 #### Instructions (single node)
 
