@@ -18,6 +18,7 @@ services:
       - greyfish_key
       - greyfish_path
       - greyfish_threads
+      - orchestra_key
       - URL_BASE
       - REDIS_AUTH
       - INFLUXDB

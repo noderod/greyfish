@@ -21,7 +21,14 @@ URL_BASE = os.environ["URL_BASE"]
 REDIS_AUTH = os.environ["REDIS_AUTH"]
 
 
-# toktok (str): User token
+
+#################################
+# USER ACTIONS
+#################################
+
+
+
+# Creates a user
 @app.route("/grey/create_user", methods=['POST'])
 def create_user():
 
@@ -117,6 +124,18 @@ def delete_user():
         return "User files and data have been completely deleted"
     except:
         return "Server Error: Could not connect to database"
+
+
+
+#################################
+# CLUSTER ACTIONS
+#################################
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

@@ -4,6 +4,8 @@
 
 #### Installation (distributed)
 
+* **Manager node**
+
 Pull this directory and modify environmental variables:
 ```bash
 git clone https://github.com/noderod/greyfish
@@ -35,10 +37,32 @@ docker-compose up -d --build
 ```
 
 
+* **Storage nodes**
+
+Note: Can only be completed after installing the manager node and with the APIs being active
+
+Pull this directory:
+```bash
+git clone https://github.com/noderod/greyfish
+cd greyfish/cloud-distributed/storage-node
+```
+
+Obtain a certificate file (*.crt*) and private key (*.key*), make sure they are named *certfile.crt* and *keyfile.key*, respectively.  
+If none are available, execute the following commands and answer the prompts as appropriate:
+```bash
+# Based on https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs
+# Creates a certificate valid for 365 days
+openssl req -newkey rsa:2048 -nodes -keyout keyfile.key -x509 -days 365 -out certfile.crt
+```
+
+Setup a storage node, using the same *orchestra_key*, *REDIS_AUTH*, and *URL_BASE* environmental variables as the manager node. All other environmental variables are described in the [storage node Dockerfile](./storage-node/Dockerfile).
+
+
+
 
 #### Instructions (distributed)
 
-To activate or switch off the APIs, enter the docker container and do:  
+To activate or switch off the APIs, enter the manager node docker container and do:  
 
 ```bash
 # Enter container
@@ -54,6 +78,8 @@ cd /grey
 
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.
 
+
+Install the storage nodes following the instructions above.
 
 
 #### Data Persistance (distributed)
