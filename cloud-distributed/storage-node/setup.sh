@@ -63,4 +63,14 @@ if [ "$available_space_KB" -lt "$MAX_STORAGE" ]; then
     exit
 fi
 
+printf "\nNo errors with environmental variables\n"
 
+
+# Adds node to cluster
+curl -X POST -H "Content-Type: application/json"\
+    -d '{"orch_key":"'"$orchestra_key"'", "MAX_STORAGE":"'"$MAX_STORAGE"'", "NODE_KEY":"'"$NODE_KEY"'"}' \
+    --insecure https://"$URL_BASE":2443/grey/cluster/addme
+
+
+# Waits indefinitely
+sleep infinity

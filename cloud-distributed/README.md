@@ -28,7 +28,7 @@ Start manager node:
 docker-compose up -d
 ```
 
-To rebuild greyfish after changes in the code:
+To rebuild greyfish after changes in the manager node code:
 ```bash
 # Bring down the containers
 docker-compose down
@@ -55,8 +55,10 @@ If none are available, execute the following commands and answer the prompts as 
 openssl req -newkey rsa:2048 -nodes -keyout keyfile.key -x509 -days 365 -out certfile.crt
 ```
 
-Setup a storage node, using the same *orchestra_key*, *REDIS_AUTH*, and *URL_BASE* environmental variables as the manager node. All other environmental variables are described in the [storage node Dockerfile](./storage-node/Dockerfile).
-
+Setup a storage node, using the same *orchestra_key*, *REDIS_AUTH*, and *URL_BASE* environmental variables as the manager node. All other environmental variables are described in the [storage node Dockerfile](./storage-node/Dockerfile). Build the image by doing:
+```bash
+docker build -t greyfish/storage-node:latest .
+```
 
 
 
@@ -79,7 +81,23 @@ cd /grey
 Note: deactivating the APIs will not change or delete any data, it will simply no longer be able to accept communications from outside.
 
 
-Install the storage nodes following the instructions above.
+Install the storage nodes following the instructions above after the manager node has been setup, then run the container as follows (environmental variables
+defined below:
+
+* NODE_KEY: Individual key associated with each node
+* REDIS_AUTH: Similar to that of the manager node, necessary to communicate with Redis
+* orchestra_key: Similar to that of the manager node, and necessary to communicate with it
+* URL_BASE: Similar to that of the manager node, URL or IP where manager node is located (excluding https:// and port)
+* FILESYSTEM: Filesystem where all data will stored. 'overlay', by default.
+* MAX_STORAGE: Maximum total storage allowed for users in KB, must be a positive integer
+
+```bash
+# Enter container
+docker run -d -e NODE_KEY="node1" -e REDIS_AUTH="redis_auth" -e orchestra_key="karaoke" -e URL_BASE="example.com"  \
+	-e FILESYSTEM="overlay" -e MAX_STORAGE="1000000" \
+	-p 3443:3443 greyfish/storage-node:latest
+```
+
 
 
 #### Data Persistance (distributed)
@@ -101,6 +119,14 @@ curl -X POST -H "Content-Type: application/json" -d '{"gkey":"'"$gk"'", "user_id
 # Delete a user
 curl -X POST -H "Content-Type: application/json" -d '{"gkey":"'"$gk"'", "user_id":"'"$USER_ID"'"}' \
 	https://$SERVER_IP:2443/grey/delete_user
+```
+
+Administrative and cluster actions:
+```bash
+# Remove storage node from cluster by IP as is (user data will not be redistributed among other storage nodes)
+curl -X POST -H "Content-Type: application/json"\
+    -d '{"orch_key":"karaoke", "node_IP":"111.111.11.11", "NODE_KEY":"node1"}' \
+    --insecure https://"$SERVER_IP":2443/grey/cluster/removeme_as_is
 ```
 
 

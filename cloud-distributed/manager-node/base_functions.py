@@ -53,6 +53,17 @@ def valid_key(ukey, username):
     return False
 
 
+
+# Checks if the orchestra key is valid
+def valid_orchestra_key(provided_key):
+
+    if provided_key == os.environ["orchestra_key"]:
+        return True
+    else:
+        return False
+
+
+
 # Creates a new key (new dir) in the dictionary
 # fpl (arr) (str): Contains the list of subsequent directories
 # exdic (dict)
@@ -144,9 +155,8 @@ def failed_login(logkey, IP, unam, action, due_to="incorrect_key"):
         password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'failed_login')
 
     # Finds if the user is valid or not
-    # Searches the list of directories
-    allowed_users = iter(f[4:] for f in os.listdir(os.environ["greyfish_path"]+"/sandbox"))
-    if unam in allowed_users:
+    r_users = redis.Redis(host=os.environ['URL_BASE'], password=os.environ['REDIS_AUTH'], db=5)
+    if r_users.exists(unam):
         valid_user="1"
     else:
         valid_user="0"
@@ -197,7 +207,7 @@ def greyfish_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
 def cluster_action_log(IP, unam, action, spec1=None, spec2=None, spec3=None):
 
     cl_log = InfluxDBClient(host = os.environ['URL_BASE'], port = 8086, username = os.environ['INFLUXDB_WRITE_USER'], 
-        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'cluster_action')
+        password = os.environ['INFLUXDB_WRITE_USER_PASSWORD'], database = 'cluster_actions')
 
     cl_log.write_points([{
                     "measurement":"cluster",

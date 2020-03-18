@@ -16,7 +16,6 @@ services:
       - "2443:2443"
     environment:
       - greyfish_key
-      - greyfish_path
       - greyfish_threads
       - orchestra_key
       - URL_BASE
